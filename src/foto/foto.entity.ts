@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
-import { AlbumEntity } from 'src/album/album.entity';
-import { UsuarioEntity } from 'src/usuario/usuario.entity';
+import { AlbumEntity } from '../album/album.entity';
+import { UsuarioEntity } from '../usuario/usuario.entity';
 import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from 'typeorm';
 
 @Entity()
@@ -20,7 +20,7 @@ export class FotoEntity {
     apertura:number;
 
     @Column()
-    fecha:string;
+    fecha:Date;
 
     @ManyToOne(()=>UsuarioEntity, usuario=>usuario.fotos)
     usuario: UsuarioEntity;

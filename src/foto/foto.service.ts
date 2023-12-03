@@ -3,16 +3,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FotoEntity } from './foto.entity';
-import { BusinessError, BusinessLogicException } from 'src/shared/interceptors/business-errors/bussiness-error';
-import { AlbumEntity } from 'src/album/album.entity';
-import { AlbumService } from 'src/album/album.service';
+import { BusinessError, BusinessLogicException } from '../shared/interceptors/business-errors/bussiness-error';
+import { AlbumEntity } from '../album/album.entity';
 
 @Injectable()
 export class FotoService {
     
     constructor(
         @InjectRepository(FotoEntity)
-        private readonly fotoRepository:Repository<FotoEntity>
+        private readonly fotoRepository:Repository<FotoEntity>,
+        @InjectRepository(AlbumEntity)
+        private readonly albumRepository:Repository<AlbumEntity>,
       ){}
 
     async createFoto(foto:FotoEntity){
@@ -40,8 +41,16 @@ export class FotoService {
     }
 
     async deleteFoto(fotoid:string){
-        const foto: FotoEntity = await this.fotoRepository.findOne({where:{id:fotoid}, relations:["album"]})
+        const foto: FotoEntity = await this.fotoRepository.findOne({where:{id:fotoid}, relations:["album","usuario"]})
         if(!foto)
             throw new BusinessLogicException("Not found",BusinessError.NOT_FOUND);
+        if(foto.album){
+            const album: AlbumEntity = await this.albumRepository.findOne({where:{id:foto.album.id},relations:["fotos"]})
+            if(album.fotos.length===1)
+                this.albumRepository.remove(foto.album);
+        }
+        this.fotoRepository.remove(foto);
+        return true;
     }
+
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RedsocialEntity } from './redsocial.entity';
-import { BusinessError, BusinessLogicException } from 'src/shared/interceptors/business-errors/bussiness-error';
+import { BusinessError, BusinessLogicException } from '../shared/interceptors/business-errors/bussiness-error';
 
 @Injectable()
 export class RedsocialService {

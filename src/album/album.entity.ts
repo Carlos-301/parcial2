@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { FotoEntity } from 'src/foto/foto.entity';
+import { FotoEntity } from '../foto/foto.entity';
 import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
 
 @Entity()

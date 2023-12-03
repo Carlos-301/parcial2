@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { UsuarioEntity } from './usuario.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BusinessError, BusinessLogicException } from 'src/shared/interceptors/business-errors/bussiness-error';
+import { BusinessError, BusinessLogicException } from '../shared/interceptors/business-errors/bussiness-error';
 
 @Injectable()
 export class UsuarioService {
@@ -16,14 +16,14 @@ export class UsuarioService {
 
     async createUsuario(usuario:UsuarioEntity){
         if(usuario.telefono.length >10)
-            throw new BusinessLogicException("El titulo no puede tener mas de 10 caracteres", BusinessError.PRECONDITION_FAILED);
+            throw new BusinessLogicException("Numero de telefono equivocado", BusinessError.PRECONDITION_FAILED);
         return await this.usuarioRpository.save(usuario);
     }
 
     async findUsuarioById(id:string){
         const usuario: UsuarioEntity = await this.usuarioRpository.findOne({where:{id}})
         if (!usuario)
-            throw new BusinessLogicException("Not found",BusinessError.NOT_FOUND);
+            throw new BusinessLogicException("Usuario no encontrado",BusinessError.NOT_FOUND);
         return usuario;
     }
 
