@@ -20,8 +20,8 @@ export class UsuarioService {
         return await this.usuarioRpository.save(usuario);
     }
 
-    async findUsuarioById(id:string){
-        const usuario: UsuarioEntity = await this.usuarioRpository.findOne({where:{id}})
+    async findUsuarioById(id:string): Promise<UsuarioEntity>{
+        const usuario: UsuarioEntity = await this.usuarioRpository.findOneBy({id})
         if (!usuario)
             throw new BusinessLogicException("Usuario no encontrado",BusinessError.NOT_FOUND);
         return usuario;

@@ -14,8 +14,10 @@ export class RedsocialService {
       ){}
 
     async createLibreria(redsocial:RedsocialEntity){
-        if (redsocial.slogan.length===0 || redsocial.slogan.length<20)
+        if (redsocial.slogan.length===0 )
             throw new BusinessLogicException("El slogan no puede estar vacio", BusinessError.PRECONDITION_FAILED);
+        if (redsocial.slogan.length<20)
+            throw new BusinessLogicException("El nombre debe tener al menos 20 caracteres", BusinessError.PRECONDITION_FAILED);
         return await this.redsocialRepository.save(redsocial);
     }
 }

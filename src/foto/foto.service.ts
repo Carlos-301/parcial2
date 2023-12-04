@@ -47,9 +47,13 @@ export class FotoService {
         if(foto.album){
             const album: AlbumEntity = await this.albumRepository.findOne({where:{id:foto.album.id},relations:["fotos"]})
             if(album.fotos.length===1)
+                await this.fotoRepository.remove(foto);
                 this.albumRepository.remove(foto.album);
         }
-        this.fotoRepository.remove(foto);
+        else{
+            await this.fotoRepository.remove(foto);
+            return true;
+        }
         return true;
     }
 
